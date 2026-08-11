@@ -1,0 +1,63 @@
+# DATABASE INTEGRATION DOCUMENTATION
+
+1. Project Overview
+This repository demonstrates a Node.js integration with an SQLite relational database (`Blog.db`). It executes relational queries to retrieve and associate records across multiple entities using SQL joins.
+
+
+2. Database Schema Structure
+The SQLite database consists of two core tables: `Articles` and `Comments`.
+
+Table: Articles
+Stores metadata regarding published articles.
+- ArticleID (INTEGER / Primary Key): Unique identifier for each article.
+- ArticleName (TEXT): Title or topic of the article (e.g., PHP, DataBase, JavaScript, Ruby, Laravel).
+- Author (TEXT): Name of the author.
+- Date (TEXT / INTEGER): Year or timestamp of publication.
+
+ Table: Comments
+Stores user feedback associated with specific articles.
+- CommentID (INTEGER / Primary Key): Unique identifier for each comment entry.
+- Name (TEXT): Name of the commenter.
+- Content (TEXT): Text content of the comment.
+- Date (TEXT / INTEGER): Year or timestamp when the comment was submitted.
+- ArticleID (INTEGER / Foreign Key): References Articles(ArticleID).
+
+---
+
+3. Implementation & SQL Query Logic
+The Node.js script (`sample.js`) uses the `sqlite3` driver to establish a connection to `Blog.db` and retrieve combined dataset records via an `INNER JOIN`.
+
+ Relational SQL Query
+SELECT 
+    Comments.Name, 
+    Comments.Content, 
+    Articles.ArticleName, 
+    Articles.Date 
+FROM Comments 
+INNER JOIN Articles ON Comments.ArticleID = Articles.ArticleID;
+
+ Key Execution Details:
+1. Database Connection: Connects directly to `./Blog.db` using `sqlite3.Database`.
+2. Data Mapping: Matches `Comments.ArticleID` with `Articles.ArticleID` to yield combined output containing commenter details along with article titles and dates.
+3. Execution Driver: Utilizes `db.all()` to pull all matching rows into an array for logging to console.
+
+ 4. Setup & Usage Instructions
+
+Prerequisites
+- Node.js (v14+ recommended)
+- `sqlite3` package installed via npm
+
+Steps to Run
+1. Ensure `Blog.db` and `sample.js` are in the same project directory.
+2. Install dependencies:
+   npm install sqlite3
+3. Execute the script:
+   node sample.js
+
+
+
+5. Repository Files
+- `Blog.db`: SQLite database file containing structured tables (`Articles`, `Comments`).
+- `sample.js`: Node.js script executing the SQL `INNER JOIN` query.
+- `.gitignore`: Specifies files ignored by Version Control (e.g., `node_modules/`).
+- `documentation.txt`: Project documentation file.
